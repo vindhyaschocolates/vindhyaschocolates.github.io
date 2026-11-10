@@ -6,6 +6,16 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var PHONE = '918726580017';
+  /* Google Sheet capture: paste your Apps Script web-app URL here (see SHEETS-SETUP.md). Leave empty to switch it off. */
+  var SHEET_URL = '';
+  function sendToSheet(type, data) {
+    if (!SHEET_URL) return;
+    try {
+      data.type = type; data.page = location.href;
+      var body = new URLSearchParams(data).toString();
+      fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
+    } catch (e) {}
+  }
 
   /* ---------- helpers ---------- */
   function store(key, val) {
@@ -226,6 +236,24 @@
   scrim.addEventListener('click', function () { openDrawer(false); });
   $('#cartClear').addEventListener('click', function () { cart = {}; save(); render(); });
   $('#custName').addEventListener('input', render); $('#custNote').addEventListener('input', render);
+  $('#sendOrder').addEventListener('click', function () {
+    var ids = Object.keys(cart); if (!ids.length) return;
+    var hp = $('#hpOrder'); if (hp && hp.value) return;
+    var lo = 0, hi = 0, q = 0, items = ids.map(function (id) { var it = cart[id]; q += it.qty; lo += it.min * it.qty; hi += it.max * it.qty; return it.qty + ' x ' + it.name; });
+    sendToSheet('order', { name: $('#custName').value.trim(), phone: $('#custPhone').value.trim(), area: $('#custArea').value.trim(), items: items.join('; '), qty: q, total: money(lo, hi), note: $('#custNote').value.trim() });
+  });
+  var lf = $('#leadForm');
+  if (lf) lf.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = $('#leadMsg'), f = lf.elements, name = f.name.value.trim(), ph = f.phone.value.replace(/[^\d+]/g, '');
+    msg.className = 'lf-msg';
+    if (f.website.value) return;
+    if (!name || ph.replace(/\D/g, '').length < 10) { msg.textContent = 'Please enter your name and a valid phone number.'; msg.classList.add('err'); return; }
+    var last = store('vindhyas_lead_ts'); if (last && Date.now() - last < 30000) { msg.textContent = 'Already received — thank you!'; msg.classList.add('ok'); return; }
+    sendToSheet('lead', { name: name, phone: ph, interest: f.interest.value.trim() });
+    store('vindhyas_lead_ts', Date.now());
+    msg.textContent = 'Thank you, ' + name + '! We’ll be in touch on WhatsApp. 🍫'; msg.classList.add('ok'); lf.reset();
+  });
   $$('.prow').forEach(function (row) {
     $('.add', row).addEventListener('click', function (e) {
       var id = row.getAttribute('data-id'), btn = e.currentTarget;

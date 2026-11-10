@@ -330,3 +330,16 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:700;line-height:1.1;letter-spac
   *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}.h1 .ch{opacity:1;transform:none}.mtrack{animation:none}
 }
+
+/* ---------- sheet capture: lead form + honeypot ---------- */
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+.leadform{margin-top:28px;padding:22px;border-radius:22px;background:rgba(255,246,232,.06);border:1px solid rgba(235,203,142,.3);display:flex;flex-direction:column;gap:10px;max-width:520px}
+.leadform h3{font-family:var(--serif);font-size:22px;color:var(--gold2);line-height:1.2}
+.leadform p{font-size:13px;color:rgba(255,246,232,.75)}
+.lf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.leadform input{width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid rgba(235,203,142,.35);background:rgba(255,246,232,.95);font:inherit;font-size:13px;color:var(--choc)}
+.leadform input:focus{outline:0;border-color:var(--rose)}
+.leadform .btn{align-self:flex-start}
+.leadform .lf-msg{min-height:18px;font-size:12.5px;margin:0}
+.lf-msg.ok{color:#9be3b0}.lf-msg.err{color:#ffb4a8}
+@media (max-width:560px){.lf-row{grid-template-columns:1fr}}
