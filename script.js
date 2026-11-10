@@ -200,11 +200,14 @@
   }
 
   /* ---------- order builder ---------- */
-  var KEY = 'vindhyas_order_v1', cart = store(KEY) || {};
+  var KEY = 'vindhyas_order_v1', TTL = 2 * 60 * 60 * 1000;
+  /* basket lives in sessionStorage only: forgotten when the tab/browser is closed, and after 2 hours */
+  function loadCart() { try { var d = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (d && d.t && Date.now() - d.t < TTL && d.c) return d.c; } catch (e) {} try { localStorage.removeItem(KEY); } catch (e) {} return {}; }
+  var cart = loadCart();
   var drawer = $('#drawer'), scrim = $('#scrim'), body = $('#cartBody'), count = $('#cartCount');
   function rupees(n) { return '₹' + n.toLocaleString('en-IN'); }
   function money(a, b) { return a === b ? rupees(a) : rupees(a) + '–' + rupees(b).slice(1); }
-  function save() { store(KEY, cart); }
+  function save() { try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), c: cart })); } catch (e) {} }
   function render() {
     var ids = Object.keys(cart), q = 0, lo = 0, hi = 0, lines = [];
     body.innerHTML = '';
@@ -241,6 +244,7 @@
     var hp = $('#hpOrder'); if (hp && hp.value) return;
     var lo = 0, hi = 0, q = 0, items = ids.map(function (id) { var it = cart[id]; q += it.qty; lo += it.min * it.qty; hi += it.max * it.qty; return it.qty + ' x ' + it.name; });
     sendToSheet('order', { name: $('#custName').value.trim(), phone: $('#custPhone').value.trim(), area: $('#custArea').value.trim(), address: $('#custAddr').value.trim(), items: items.join('; '), qty: q, total: money(lo, hi), note: $('#custNote').value.trim() });
+    setTimeout(function () { cart = {}; save(); ['#custName', '#custPhone', '#custArea', '#custAddr', '#custNote'].forEach(function (k) { var el = $(k); if (el) el.value = ''; }); render(); openDrawer(false); toast('Order sent — thank you! 🍫'); }, 1200);
   });
   var lf = $('#leadForm');
   if (lf) lf.addEventListener('submit', function (e) {
