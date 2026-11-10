@@ -7,7 +7,7 @@
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var PHONE = '918726580017';
   /* Google Sheet capture: paste your Apps Script web-app URL here (see SHEETS-SETUP.md). Leave empty to switch it off. */
-  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbyBD33ikRi8N0qDyrffqFBltPGczKDmBI1eUs6zcQufOyd_Mi3GW3eTiwbgWPsrNRSc/exec';
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycby4FacwQYH4QBNV0xNQZ7ZHGzOD5BQpRG6MqN8tVelhoCaPkF28n1X4VLJUhh9o3dVi/exec';
   function sendToSheet(type, data) {
     if (!SHEET_URL) return;
     try {
