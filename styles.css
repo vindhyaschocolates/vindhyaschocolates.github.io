@@ -379,3 +379,25 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:700;line-height:1.1;letter-spac
   .fscript{font-size:28px}
 }
 @media (min-width:901px){.h1.script-line{font-size:clamp(56px,5.7vw,88px);white-space:nowrap}}
+
+/* ---------- customisation band ---------- */
+.pnote{display:block;margin-top:4px;font-style:normal;font-size:12px;color:var(--berry);font-weight:600}
+.custom{max-width:1180px;margin:0 auto 34px;display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(22px,4vw,56px);align-items:center;background:#fff;border:1px solid rgba(201,155,88,.35);border-radius:34px;padding:14px;box-shadow:0 24px 60px rgba(74,43,31,.14)}
+.cimg{border-radius:24px;overflow:hidden;aspect-ratio:3/2}.cimg img{width:100%;height:100%;object-fit:cover;display:block}
+.ctext{padding:10px clamp(10px,2vw,30px) 10px 0}.ctext .kick{color:var(--berry)}
+.ctext h3{font-family:var(--serif);font-size:clamp(28px,3.4vw,42px);line-height:1.1;color:var(--choc)}.ctext h3 em{color:var(--berry)}
+.ctext p{margin-top:14px;font-size:14.5px;color:var(--muted)}
+.cticks{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+.cticks li{padding:7px 14px;border-radius:999px;background:#fbe9d2;border:1px solid rgba(201,155,88,.5);font-size:12px;font-weight:600;color:var(--choc)}
+.ctext .cnote{margin-top:16px;padding:12px 16px;border-radius:14px;background:#fff3e0;border-left:4px solid var(--gold);font-size:13px;color:var(--choc)}
+@media (max-width:860px){.custom{grid-template-columns:1fr;border-radius:26px}.ctext{padding:6px 10px 14px}}
+
+
+/* ---------- inspiration grid ---------- */
+.cgrid{max-width:1180px;margin:0 auto 38px;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:250px 250px;gap:16px;grid-template-areas:"pops dates dates" "pops slab tray"}
+.cg-title{grid-column:1/-1;display:none}
+.cgrid .gitem{margin:0;border-radius:24px;height:100%}
+.cgrid .gitem img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
+.cgrid .gitem:hover img{transform:scale(1.06)}
+.cg-pops{grid-area:pops}.cg-dates{grid-area:dates}.cg-slab{grid-area:slab}.cg-tray{grid-area:tray}
+@media (max-width:760px){.cgrid{grid-template-columns:1fr 1fr;grid-template-rows:auto;grid-template-areas:"pops pops" "dates dates" "slab tray";gap:12px}.cg-pops{aspect-ratio:4/5}.cg-dates{aspect-ratio:3/2}.cg-slab,.cg-tray{aspect-ratio:1}}

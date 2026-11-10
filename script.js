@@ -224,7 +224,7 @@
     $('#cartTotal').textContent = q ? money(lo, hi) : '₹0';
     var send = $('#sendOrder'); send.classList.toggle('disabled', !q);
     var name = $('#custName').value.trim(), note = $('#custNote').value.trim();
-    var msg = "Hi Vindhya's! I'd like to place an order:\n" + lines.join('\n') + (q ? '\n\nEstimated total: ' + money(lo, hi) : '') + (name ? '\nName: ' + name : '') + (note ? '\nNote: ' + note : '') + '\n\nPlease confirm availability and the final price. Thank you!';
+    var msg = "Hi Vindhya's! I'd like to place an order:\n" + lines.join('\n') + (q ? '\n\nEstimated total: ' + money(lo, hi) : '') + (name ? '\nName: ' + name : '') + (($('#custAddr').value.trim()) ? '\nDelivery address: ' + $('#custAddr').value.trim() : '') + (note ? '\nNote: ' + note : '') + '\n\nPlease confirm availability, the final price (customisation may change it) and delivery charges. Thank you!';
     send.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg);
   }
   function openDrawer(open) {
@@ -235,12 +235,12 @@
   $('#cartClose').addEventListener('click', function () { openDrawer(false); });
   scrim.addEventListener('click', function () { openDrawer(false); });
   $('#cartClear').addEventListener('click', function () { cart = {}; save(); render(); });
-  $('#custName').addEventListener('input', render); $('#custNote').addEventListener('input', render);
+  $('#custName').addEventListener('input', render); $('#custNote').addEventListener('input', render); $('#custAddr').addEventListener('input', render);
   $('#sendOrder').addEventListener('click', function () {
     var ids = Object.keys(cart); if (!ids.length) return;
     var hp = $('#hpOrder'); if (hp && hp.value) return;
     var lo = 0, hi = 0, q = 0, items = ids.map(function (id) { var it = cart[id]; q += it.qty; lo += it.min * it.qty; hi += it.max * it.qty; return it.qty + ' x ' + it.name; });
-    sendToSheet('order', { name: $('#custName').value.trim(), phone: $('#custPhone').value.trim(), area: $('#custArea').value.trim(), items: items.join('; '), qty: q, total: money(lo, hi), note: $('#custNote').value.trim() });
+    sendToSheet('order', { name: $('#custName').value.trim(), phone: $('#custPhone').value.trim(), area: $('#custArea').value.trim(), address: $('#custAddr').value.trim(), items: items.join('; '), qty: q, total: money(lo, hi), note: $('#custNote').value.trim() });
   });
   var lf = $('#leadForm');
   if (lf) lf.addEventListener('submit', function (e) {
